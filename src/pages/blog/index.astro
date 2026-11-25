@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../site';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<BaseLayout title="Blog">
+  <h1>Blog</h1>
+  <p class="lede">Notes and posts, newest first.</p>
+
+  <ul class="post-list">
+    {
+      posts.map((post) => (
+        <li>
+          <a href={withBase(`blog/${post.id}/`)}>{post.data.title}</a>
+          <time datetime={post.data.pubDate.toISOString()}>
+            {post.data.pubDate.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </time>
+          {post.data.description && <p>{post.data.description}</p>}
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>

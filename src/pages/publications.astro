@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import publications from '../data/publications.yaml';
+
+interface PaperLink {
+  label: string;
+  url: string;
+}
+
+interface Paper {
+  title: string;
+  authors: string[];
+  venue?: string;
+  year: number;
+  links?: PaperLink[];
+}
+
+// The list is rendered from src/data/publications.yaml — edit that file,
+// not this page.
+const papers = (publications as Paper[]).slice().sort((a, b) => b.year - a.year);
+const years = [...new Set(papers.map((paper) => paper.year))];
+---
+
+<BaseLayout title="Publications">
+  <h1>Publications</h1>
+  <p class="lede">Papers, preprints, and other things I've written.</p>
+
+  {
+    years.map((year) => (
+      <section class="year">
+        <h2>{year}</h2>
+        <ul class="papers">
+          {papers
+            .filter((paper) => paper.year === year)
+            .map((paper) => (
+              <li class="paper">
+                <p class="title">{paper.title}</p>
+                <p class="meta">
+                  {paper.authors.join(', ')}
+                  {paper.venue && (
+                    <>
+                      {' — '}
+                      <em>{paper.venue}</em>
+                    </>
+                  )}
+                </p>
+                {paper.links && paper.links.length > 0 && (
+                  <p class="links">
+                    {paper.links.map((link) => (
+                      <a href={link.url}>{link.label}</a>
+                    ))}
+                  </p>
+                )}
+              </li>
+            ))}
+        </ul>
+      </section>
+    ))
+  }
+</BaseLayout>
+
+<style>
+  .year h2 {
+    margin-bottom: 1rem;
+  }
+</style>

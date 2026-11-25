@@ -1,0 +1,173 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../site';
+
+// TODO: replace the placeholder entries below with your real history.
+const experience = [
+  {
+    period: '2023 — present',
+    role: 'Your current position',
+    place: 'Institution / Company',
+    detail: 'One line about what you do here.',
+  },
+  {
+    period: '2020 — 2023',
+    role: 'Previous position',
+    place: 'Another Institution',
+    detail: 'What you were responsible for.',
+  },
+];
+
+const education = [
+  {
+    period: '2018 — 2023',
+    role: 'PhD, Your Field',
+    place: 'Your University',
+    detail: 'Thesis: something you are proud of.',
+  },
+  {
+    period: '2014 — 2018',
+    role: 'BSc, Your Field',
+    place: 'Your University',
+    detail: '',
+  },
+];
+
+const teaching = [
+  {
+    period: '2022',
+    role: 'Teaching assistant, Some Course',
+    place: 'Your University',
+    detail: '',
+  },
+];
+
+const skills = ['Skill one', 'Skill two', 'A tool you know well', 'Another tool'];
+---
+
+<BaseLayout title="CV">
+  <div class="cv-head">
+    <h1>CV</h1>
+    <!-- Drop your cv.pdf into the public/ folder and this button will work. -->
+    <a class="button" href={withBase('cv.pdf')}>Download PDF</a>
+  </div>
+  <p class="lede">A summary of my education, positions, and service.</p>
+
+  <h2>Experience</h2>
+  <ul class="cv-list">
+    {
+      experience.map((item) => (
+        <li class="cv-item">
+          <span class="period">{item.period}</span>
+          <div>
+            <p class="role">{item.role}</p>
+            <p class="place">{item.place}</p>
+            {item.detail && <p class="detail">{item.detail}</p>}
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2>Education</h2>
+  <ul class="cv-list">
+    {
+      education.map((item) => (
+        <li class="cv-item">
+          <span class="period">{item.period}</span>
+          <div>
+            <p class="role">{item.role}</p>
+            <p class="place">{item.place}</p>
+            {item.detail && <p class="detail">{item.detail}</p>}
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2>Teaching & service</h2>
+  <ul class="cv-list">
+    {
+      teaching.map((item) => (
+        <li class="cv-item">
+          <span class="period">{item.period}</span>
+          <div>
+            <p class="role">{item.role}</p>
+            <p class="place">{item.place}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2>Skills</h2>
+  <ul class="chips">
+    {skills.map((skill) => <li>{skill}</li>)}
+  </ul>
+</BaseLayout>
+
+<style>
+  .cv-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .cv-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .cv-item {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    gap: 0.1rem 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .period {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .role {
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .place {
+    color: var(--muted);
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  .detail {
+    margin: 0.2rem 0 0;
+    font-size: 0.95rem;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .chips li {
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.2rem 0.75rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  @media (max-width: 480px) {
+    .cv-item {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

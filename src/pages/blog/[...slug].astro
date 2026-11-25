@@ -1,0 +1,66 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <article class="post">
+    <header>
+      <h1>{post.data.title}</h1>
+      <time class="date" datetime={post.data.pubDate.toISOString()}>
+        {
+          post.data.pubDate.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })
+        }
+      </time>
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+    <p class="back"><a href={withBase('blog')}>← All posts</a></p>
+  </article>
+</BaseLayout>
+
+<style>
+  .post header {
+    margin-bottom: 1.5rem;
+  }
+
+  .date {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .back {
+    margin-top: 3rem;
+  }
+
+  .back a {
+    text-decoration: none;
+    color: var(--muted);
+  }
+
+  .back a:hover {
+    color: var(--accent);
+  }
+</style>

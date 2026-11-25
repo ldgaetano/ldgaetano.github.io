@@ -1,0 +1,24 @@
+# Your publication list — the only file you edit to add a paper.
+#
+# Copy an entry, fill it in, save, push. That's it.
+# `links` is optional; each link is a { label, url } pair.
+
+- title: "Sample Paper Title: A Study of Something Interesting"
+  authors: ["Your Name", "A. Collaborator"]
+  venue: "Journal of Placeholder Studies"
+  year: 2026
+  links:
+    - { label: "DOI", url: "https://doi.org/10.0000/example-doi" }
+    - { label: "PDF", url: "https://example.com/paper.pdf" }
+
+- title: "Another Sample: Methods for Doing Nice Things"
+  authors: ["B. Coauthor", "Your Name", "C. Coauthor"]
+  venue: "Proceedings of the International Conference on Examples"
+  year: 2025
+  links:
+    - { label: "DOI", url: "https://doi.org/10.0000/another-doi" }
+
+- title: "Early Work on Very Small Questions"
+  authors: ["Your Name"]
+  venue: "Workshop on Placeholders (WOP)"
+  year: 2024

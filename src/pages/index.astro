@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_TITLE, withBase } from '../site';
+
+const posts = (await getCollection('blog'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout>
+  <section class="hero">
+    <h1>{SITE_TITLE}</h1>
+    <p class="tagline">One line about who you are and what you do.</p>
+    <p class="bio">
+      A short paragraph or two: what you work on, where you are based, and what
+      this corner of the internet collects — your CV, your papers, and the
+      occasional blog post.
+    </p>
+    <div class="actions">
+      <a class="button" href={withBase('cv')}>View my CV</a>
+      <a class="button" href={withBase('publications')}>Publications</a>
+      <a class="button ghost" href={withBase('blog')}>Read the blog</a>
+    </div>
+  </section>
+
+  <section class="recent">
+    <h2>Recent posts</h2>
+    <ul class="post-list">
+      {
+        posts.map((post) => (
+          <li>
+            <a href={withBase(`blog/${post.id}/`)}>{post.data.title}</a>
+            <time datetime={post.data.pubDate.toISOString()}>
+              {post.data.pubDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </time>
+            {post.data.description && <p>{post.data.description}</p>}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-top: 1rem;
+  }
+
+  .tagline {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--muted);
+    margin: 0.25rem 0 0;
+  }
+
+  .bio {
+    max-width: 38rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 1.5rem 0 0;
+  }
+</style>
